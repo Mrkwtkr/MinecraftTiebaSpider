@@ -19,10 +19,10 @@ def get_html(url):
 def get_content(url):
 	data_list = []
 	html = get_html(url)
-
+	# 搜索class为s_post的div标签
 	soup = BeautifulSoup(html, "lxml")
 	postTags = soup.find_all("div", attrs={"class": "s_post"})
-
+	# 在每个帖子的div中搜索标题、用户、时间和链接
 	for post in postTags:
 		data = {}
 		try:
@@ -34,7 +34,7 @@ def get_content(url):
 			data_list.append(data)
 		except:
 			print("[ERROR][get_content]爬取帖子信息时发生错误！")
-
+	# 返回数据列表，其中的元素为字典
 	return data_list
 
 
