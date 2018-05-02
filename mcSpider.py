@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -40,15 +43,16 @@ def get_content(url):
 
 # 爬取数据写入文本文件
 def Out2File(dict, tieba, keyword, url):
-	with open('tieba.txt', 'a+') as f:
+	# 以Append方式打开文件，写入数据时使用UTF-8编码
+	with open('tieba.txt', 'a+', encoding='utf-8') as f:
 		time_str = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-		head = u'爬取时间: {}\n在{}吧搜索关键词: {}\n搜索结果URL: {}'.format(time_str, tieba, keyword, url)
+		head = u'爬取时间: %s \n在%s吧搜索关键词: %s \n搜索结果URL: %s \n' % (time_str, tieba, keyword, url)
 		print(head)
 		f.write(head)
 		# 将字典中储存的数据整理输出
 		error_list = []
 		for data in dict:
-			item = u'标题: {} \t 用户: {} \t 时间: {} \t 链接: {}'.format(data['title'], data['user'], data['time'], data['link'])
+			item = u'标题: %s \t 用户: %s \t 时间: %s \t 链接: %s \n' % (data['title'], data['user'], data['time'], data['link'])
 			try:
 				f.write(item)
 				print(item)
@@ -89,7 +93,7 @@ def getUrlList(url):
 			print(u'[ERROR][getUrlList]获取页码数时发生了错误！\n')
 			print(u'soup.find:'+soup.find('a', attrs={'class': 'last'})['href'])
 		else:
-			print(u'[getUrlList]获取页码数成功\nURL: {}\nlast_tag: {}\nkwd: {}\npn_max: {}\n'.format(url, last_tag, kwd, pn_max))
+			print(u'[getUrlList]获取页码数成功 \n URL: %s \n last_tag: %s \n kwd: %s \n pn_max: %s \n' % (url, last_tag, kwd, pn_max))
 			while (pn<=pn_max):
 				url_list.append(url+'&pn='+str(pn))
 				pn = pn + 1
